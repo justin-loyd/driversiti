@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'de.undercouch:gradle-download-task:1.2'
+    }
+}
+repositories {
+    mavenLocal()
+    maven {
+        name = "apioRepoRel"
+        url = "http://ec2-54-172-160-248.compute-1.amazonaws.com:8081/artifactory/ext-release-local"
+        credentials {
+            username = project.artifactoryUsername
+            password = project.artifactoryPassword
+        }
+    }
+    mavenCentral()
+}
+dependencies{
+
+    compile(group: 'com.apiosystems', name: 'androidSDK', version: '2.2.9-RELEASE', ext: 'aar',changing: true, transitive: true)
+//  Note: If there are conflicts with volley or play-services libraries you can exclude them like this:
+//  If there are conflicts with volley or play-services-location you can exclude them like this:
+//  compile(group: 'com.apiosystems', name: 'androidSDK', version: 2.2.8-RELEASE, ext: 'aar',changing: true, transitive: true){
+//    exclude group: 'com.apiosystems.support', module: ‘volley’
+//    exclude group: ‘com.google.android.gms', module: 'play-services-location'
+//    exclude group: ‘com.google.android.gms', module: 'play-services-maps'
+//    exclude group: ‘com.google.android.gms', module: 'play-services-analytics'
+// }
+}
+
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.mapquest.driversitidemo"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-v13:23.1.1'
+}
